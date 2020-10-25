@@ -37,6 +37,9 @@ while txtIn != 'x':
     txtIn = input("Type names of sector to remove it from the list or type 'x' to exit.")
     sectorsToRemove = txtIn.split(',')
     sectorNames = diff(sectorNames, sectorsToRemove)
+    if len(sectorNames) == 0:
+        print('All sectors removed...')
+        sys.exit()
 txtIn = ''
 while txtIn != 'x':
     print('Selected years: ', tabNames)
@@ -44,6 +47,9 @@ while txtIn != 'x':
     txtIn = input("Type years to remove it from the list or type 'x' to exit.")
     yearsToRemove = txtIn.split(',')
     tabNames = diff(tabNames, yearsToRemove)
+    if len(tabNames) == 0:
+        print('All years removed...')
+        sys.exit()
 
 #Removing duplicates
 for tab in allTabNames:
