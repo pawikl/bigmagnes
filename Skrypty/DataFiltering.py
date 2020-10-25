@@ -26,6 +26,14 @@ filteredData = []
 #Skipped lines counter
 skippedRows = 0
 
+#Number of rows
+correctRows = {'PC_Time2014' : 0, 'PC_Time2015' : 0, 
+            'PC_Time2016': 0, 'PC_Time2017' : 0,
+            'PC_Time2018' : 0}
+allRows = {'PC_Time2014' : 0, 'PC_Time2015' : 0, 
+            'PC_Time2016': 0, 'PC_Time2017' : 0,
+            'PC_Time2018' : 0}
+
 #Selecting yeats and sector (will be replaced by gui)
 def diff(first, second):
         second = set(second)
@@ -47,9 +55,11 @@ while txtIn != 'x':
     txtIn = input("Type years to remove it from the list or type 'x' to exit.")
     yearsToRemove = txtIn.split(',')
     tabNames = diff(tabNames, yearsToRemove)
+    allTabNames = diff(allTabNames, yearsToRemove)
     if len(tabNames) == 0:
         print('All years removed...')
         sys.exit()
+
 
 #Removing duplicates
 for tab in allTabNames:
@@ -91,11 +101,13 @@ skippedRows = 0
 #Getting data from all PC_Time csv files
 for tab in tabNames:
     for line in fileinput.FileInput('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv', inplace=1):
+        allRows[tab] += 1
         tabData = line.split(',')
         if tabData[0] not in filteredPC[0]:
             skippedRows += 1
             continue
         else:
+            correctRows[tab] += 1
             line = line[:-1]
             line += ',' + tab
             dataTabs[tab].add(line)
@@ -107,4 +119,10 @@ for tab in tabNames:
     print(tab, 'validation, number of skipped: ', skippedRows)
     skippedRows = 0
 
-print('Data saved')
+print('Data saved.')
+
+for tab in tabNames:
+    print('Number of all lines in ', tab, ': ', allRows[tab])
+    print('Number of correct lines in ', tab, ': ', correctRows[tab])
+    print('Number of removed lines in ', tab, ': ', allRows[tab] - correctRows[tab])
+    print('Percentage of valid lines in', tab, ': ', round((correctRows[tab] / allRows[tab]), 2) * 100, '%')
