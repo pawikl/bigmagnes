@@ -73,18 +73,16 @@ for tab in tabNames:
         if tabData[0] not in filteredPC:
             skippedRows += 1
             continue
+        line = line[:-1]
+        line += ',' + tab + '\n'
         dataTabs[tab].add(line)
         filteredData.add(line)
-        line += tab + ','
         print(line, end = '')
         
     print(tab, 'validation, number of skipped: ', skippedRows)
     skippedRows = 0
 
-#Saving data to one file
-for row in filteredData:
-    df.append([row])
-df.to_csv('C:\Projekt_badawczy_CERN\cern\PC_Time_All.csv', index=False)
+print('Data saved')
 
 #Printing the result
 elapsedTime = time.time() - startTime
