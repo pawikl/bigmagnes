@@ -34,7 +34,7 @@ allRows = {'PC_Time2014' : 0, 'PC_Time2015' : 0,
             'PC_Time2016': 0, 'PC_Time2017' : 0,
             'PC_Time2018' : 0}
 
-#Selecting yeats and sector (will be replaced by gui)
+#Selecting years and sector (will be replaced by gui)
 def diff(first, second):
         second = set(second)
         return [item for item in first if item not in second]
@@ -63,16 +63,16 @@ while txtIn != 'x':
 
 #Removing duplicates
 for tab in allTabNames:
-    df = pd.read_csv('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv')
+    df = pd.read_csv('../Dane/' + tab + '.csv')
     firstColumn = df.columns[0]
     df = df.drop([firstColumn], axis=1)
-    df.to_csv('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv', index=False)
-    df = pd.read_csv('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv').drop_duplicates(keep='first')
-    df.to_csv('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv', index=False)
+    df.to_csv('../Dane/' + tab + '.csv', index=False)
+    df = pd.read_csv('../Dane/' + tab + '.csv').drop_duplicates(keep='first')
+    df.to_csv('../Dane/' + tab + '.csv', index=False)
     print(tab + ' - duplicates removed')
 
 #Saving circuits from selected sectors
-for line in fileinput.FileInput('C:\Projekt_badawczy_CERN\cern\Circuit_Sector.csv', inplace=1):
+for line in fileinput.FileInput('../Dane/Circuit_Sector.csv', inplace=1):
     sectorData = line.split(',')
     tabSector.add(line)
     print(line, end = '')
@@ -81,7 +81,7 @@ for line in fileinput.FileInput('C:\Projekt_badawczy_CERN\cern\Circuit_Sector.cs
         filteredCircuits[1].append(sectorData[2])
 
 #Saving PCs from available circuits
-for line in fileinput.FileInput('C:\Projekt_badawczy_CERN\cern\PC_Circuit.csv', inplace=1):
+for line in fileinput.FileInput('../Dane/PC_Circuit.csv', inplace=1):
     circuitData = line.split(',')
     if circuitData[0] not in filteredCircuits[0]:
         skippedRows += 1
@@ -100,7 +100,7 @@ skippedRows = 0
 
 #Getting data from all PC_Time csv files
 for tab in tabNames:
-    for line in fileinput.FileInput('C:\Projekt_badawczy_CERN\cern\\' + tab + '.csv', inplace=1):
+    for line in fileinput.FileInput('../Dane/' + tab + '.csv', inplace=1):
         allRows[tab] += 1
         tabData = line.split(',')
         if tabData[0] not in filteredPC[0]:
@@ -125,4 +125,4 @@ for tab in tabNames:
     print('Number of all lines in ', tab, ': ', allRows[tab])
     print('Number of correct lines in ', tab, ': ', correctRows[tab])
     print('Number of removed lines in ', tab, ': ', allRows[tab] - correctRows[tab])
-    print('Percentage of valid lines in', tab, ': ', round((correctRows[tab] / allRows[tab]), 2) * 100, '%')
+    print('Percentage of valid lines in', tab, ': ', round((correctRows[tab] / allRows[tab]), 4) * 100, '%')
