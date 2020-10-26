@@ -63,16 +63,16 @@ while txtIn != 'x':
 
 #Removing duplicates
 for tab in allTabNames:
-    df = pd.read_csv('../Dane/' + tab + '.csv')
+    df = pd.read_csv('./Dane/' + tab + '.csv')
     firstColumn = df.columns[0]
     df = df.drop([firstColumn], axis=1)
-    df.to_csv('../Dane/Po/' + tab + '.csv', index=False)
-    df = pd.read_csv('../Dane/Po/' + tab + '.csv').drop_duplicates(keep='first')
-    df.to_csv('../Dane/Po/' + tab + '.csv', index=False)
+    df.to_csv('./Dane/Po/' + tab + '.csv', index=False)
+    df = pd.read_csv('./Dane/Po/' + tab + '.csv').drop_duplicates(keep='first')
+    df.to_csv('./Dane/Po/' + tab + '.csv', index=False)
     print(tab + ' - duplicates removed')
 
 #Saving circuits from selected sectors
-for line in fileinput.FileInput('../Dane/Po/Circuit_Sector.csv', inplace=1):
+for line in fileinput.FileInput('./Dane/Po/Circuit_Sector.csv', inplace=1):
     sectorData = line.split(',')
     tabSector.add(line)
     print(line, end = '')
@@ -81,7 +81,7 @@ for line in fileinput.FileInput('../Dane/Po/Circuit_Sector.csv', inplace=1):
         filteredCircuits[1].append(sectorData[2])
 
 #Saving PCs from available circuits
-for line in fileinput.FileInput('../Dane/Po/PC_Circuit.csv', inplace=1):
+for line in fileinput.FileInput('./Dane/Po/PC_Circuit.csv', inplace=1):
     circuitData = line.split(',')
     if circuitData[0] not in filteredCircuits[0]:
         skippedRows += 1
@@ -100,7 +100,7 @@ skippedRows = 0
 
 #Getting data from all PC_Time csv files
 for tab in tabNames:
-    for line in fileinput.FileInput('../Dane/Po/' + tab + '.csv', inplace=1):
+    for line in fileinput.FileInput('./Dane/Po/' + tab + '.csv', inplace=1):
         allRows[tab] += 1
         tabData = line.split(',')
         if tabData[0] not in filteredPC[0]:
